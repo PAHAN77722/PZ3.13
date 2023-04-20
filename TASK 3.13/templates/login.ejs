@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <style>
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .container {
+            padding: 16px;
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h2>Login Page</h2>
+<div class="container">
+    <h3>Login</h3>
+        <label for="username"><b>Username</b></label>
+        <input id="username" type="text" placeholder="Enter Username" name="username" required>
+
+        <label for="password"><b>Password</b></label>
+        <input id="password" type="password" placeholder="Enter Password" name="password" required>
+
+        <input type="submit" id="btn" value="Login">
+</div>
+<script>
+    const usernameInput = document.getElementById("username")
+    const passwordInput = document.getElementById("username")
+    const btn = document.getElementById("btn")
+
+    btn.addEventListener("click", () => {
+        const username = usernameInput.value
+        const password = passwordInput.value
+
+        if (username === "" || password === "") {
+            alert("Incorrect input")
+            return
+        }
+
+        const user = {password, username}
+
+        fetch("http://localhost:5000/api/login", {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+            body: JSON.stringify(user),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.isSuccess === false) {
+                    alert(data.message)
+                } else {
+                    window.location.href = "/mysql"
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+    })
+</script>
+
+
+</body>
+</html>
